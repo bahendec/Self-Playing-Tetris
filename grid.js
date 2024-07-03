@@ -213,5 +213,20 @@ class Grid {
             this.active.setPositions(test2);
             return;
         }
+        let test3 = this.active.rotateTestThree(this.rotationState, clockwise, test1);
+        if (this.rotationCollisionCheck(test3) == false) {
+            this.active.setPositions(test3);
+            return;
+        }
+        let test4 = this.active.rotateTestFour(this.rotationState, clockwise, test1);
+        if (this.rotationCollisionCheck(test4) == false) {
+            this.active.setPositions(test4);
+            return;
+        }
+        let test5 = this.active.rotateTestFive(this.rotationState, clockwise, test1);
+        if (this.rotationCollisionCheck(test5) == false) {
+            this.active.setPositions(test5);
+            return;
+        }
     }
 }

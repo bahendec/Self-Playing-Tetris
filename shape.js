@@ -125,4 +125,74 @@ class Shape {
             return this.shift(pos, -1, 0);
         }
     }
+
+    rotateTestThree(state, clockwise, pos) {
+        if (state == 0) {
+            if (clockwise) {
+                // left one up one
+                return this.shift(pos, -1, 1);
+            } else {
+                // right one up one
+                return this.shift(pos, 1, 1);
+            }
+        } else if (state == 1) {
+            // right one down one
+            return this.shift(pos, 1, -1);
+        } else if (state == 2) {
+            if (clockwise) {
+                // right one up one
+                return this.shift(pos, 1, 1);
+            } else {
+                // left one up one
+                return this.shift(pos, -1, 1);
+            }
+        } else {
+            // left one down one
+            return this.shift(pos, -1, -1);
+        }
+    }
+
+    rotateTestFour(state, clockwise, pos) {
+        switch(state) {
+            case 0:
+                // down two
+                return this.shift(pos, 0, -2);
+            case 1:
+                // up two
+                return this.shift(pos, 0, 2);
+            case 2:
+                // down two
+                return this.shift(pos, 0, -2);
+            case 3:
+                // up two
+                return this.shift(pos, 0, 2);
+        }
+    }
+
+    rotateTestFive(state, clockwise, pos) {
+        switch(state) {
+            case 0:
+                if (clockwise) {
+                    // left one down 2
+                    return this.shift(pos, -1, -2);
+                } else {
+                    // right one down 2
+                    return this.shift(pos, 1, -2);
+                }
+            case 1:
+                // right one up two
+                return this.shift(pos, 1, 2);
+            case 2:
+                if (clockwise) {
+                    // right one down two
+                    return this.shift(pos, 1, -2);
+                } else {
+                    // left one down two
+                    return this.shift(pos, -1, -2);
+                }
+            case 3:
+                // left one down two
+                return this.shift(pos, -1, -2);
+        }
+    }
 }
