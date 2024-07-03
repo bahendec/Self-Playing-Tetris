@@ -66,6 +66,17 @@ class Shape {
         }
     }
 
+    shift(pos, right, up) {
+        let ret = [];
+        for (let xy of pos) {
+            let temp = [];
+            temp.push(xy[0] + right);
+            temp.push(xy[1] + up);
+            ret.push(temp);
+        }
+        return ret;
+    }
+
     rotateTestOne(clockwise) {
         // Get position of the blocks with pure rotation
         let newpos = [];
@@ -87,5 +98,31 @@ class Shape {
             newpos.push(xy);
         }
         return newpos;
+    }
+
+    rotateTestTwo(state, clockwise, pos) {
+        if (state == 0) {
+            if (clockwise) {
+                // left one
+                return this.shift(pos, -1, 0);
+            } else {
+                // right one
+                return this.shift(pos, 1, 0);
+            }
+        } else if (state == 1) {
+            // right one
+            return this.shift(pos, 1, 0);
+        } else if (state == 2) {
+            if (clockwise) {
+                // right one
+                return this.shift(pos, 1, 0);
+            } else {
+                // left one
+                return this.shift(pos, -1, 0);
+            }
+        } else {
+            // left one
+            return this.shift(pos, -1, 0);
+        }
     }
 }

@@ -200,6 +200,13 @@ class Grid {
         let test1 = this.active.rotateTestOne(clockwise);
         if (this.rotationCollisionCheck(test1) == false) {
             this.active.setPositions(test1);
+            return;
+        } 
+        // SRS begin
+        let test2 = this.active.rotateTestTwo(this.rotationState, clockwise, test1);
+        if (this.rotationCollisionCheck(test2) == false) {
+            this.active.setPositions(test2);
+            return;
         }
     }
 }
