@@ -44,5 +44,9 @@ function keyPressed() {
     grid.moveLeft();
   } else if (keyCode === 39) {
     grid.moveRight();
+  } else if (keyCode === 38) {
+    grid.rotate(true);
+  } else if (keyCode === 90) {
+    grid.rotate(false);
   }
 }

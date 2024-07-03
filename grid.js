@@ -29,6 +29,7 @@ class Grid {
         this.hasNext = false;
         this.next = 0;
         this.size = 0;
+        this.rotationState = 0;
     }
 
     setShapes(shapes) {
@@ -170,6 +171,29 @@ class Grid {
                 shape = new T(this.size);
                 break;
         }
+        this.rotationState = 0;
         return shape;
+    }
+
+    rotationCollisionCheck(pos) {
+        return false;
+    }
+
+    rotate(clockwise) {
+        // Get new rotation state
+        let temp_rotationState = this.rotationState;
+        if (clockwise) {
+            temp_rotationState += 1;
+        } else {
+            temp_rotationState -= 1;
+        }
+        temp_rotationState = (temp_rotationState % 4);
+        if (temp_rotationState == -1) {
+            temp_rotationState = 3;
+        }
+        let test1 = this.active.rotateTestOne(clockwise);
+        if (this.rotationCollisionCheck(test1) == false) {
+            this.active.setPositions(test1);
+        }
     }
 }
