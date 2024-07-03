@@ -17,11 +17,10 @@ class Shape {
             block.setSize(size);
         }
     }
-
+    // Check if it's time for a fall
     fall(speed) {
         this.y += speed;
         if (this.y - this.oldy >= 1) {
-            this.oldy = this.y;
             return true;
         }
         return false;
@@ -31,6 +30,7 @@ class Shape {
         for (let block of this.blocks) {
             block.moveDown();
         }
+        this.oldy = this.y;
     }
     // return a list of block positions in the shape
     getPositions() {
