@@ -99,12 +99,38 @@ class Grid {
         }
     }
 
+    checkLeftCollsion() {
+        let pos = this.active.getPositions();
+        for (let xy of pos) {
+            // Check for wall collision
+            if (xy[0] == 0) {
+                return true
+            }
+        }
+        return false;
+    }
+
+    checkRightCollsion() {
+        let pos = this.active.getPositions();
+        for (let xy of pos) {
+            // Check for wall collision
+            if (xy[0] == 9) {
+                return true
+            }
+        }
+        return false;
+    }
+
     moveLeft() {
-        this.active.moveLeft();
+        if (this.checkLeftCollsion() == false) {
+            this.active.moveLeft();
+        }
     }
 
     moveRight() {
-        this.active.moveRight();
+        if (this.checkRightCollsion() == false) {
+            this.active.moveRight();
+        }
     }
 
     moveDown() {
