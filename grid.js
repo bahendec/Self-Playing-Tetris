@@ -104,7 +104,10 @@ class Grid {
         for (let xy of pos) {
             // Check for wall collision
             if (xy[0] == 0) {
-                return true
+                return true;
+            } else if (this.matrix[xy[1]][xy[0] - 1] == 1) {
+                // Check block collsions
+                return true;
             }
         }
         return false;
@@ -115,7 +118,9 @@ class Grid {
         for (let xy of pos) {
             // Check for wall collision
             if (xy[0] == 9) {
-                return true
+                return true;
+            } else if (this.matrix[xy[1]][xy[0] + 1] == 1) {
+                return true;
             }
         }
         return false;
