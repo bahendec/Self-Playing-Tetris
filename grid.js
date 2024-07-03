@@ -1,4 +1,4 @@
-const FALL_SPEED = 1/30; // Grid/frame
+const FALL_SPEED = 1/20; // Grid/frame
 
 class Grid {
     constructor() {
