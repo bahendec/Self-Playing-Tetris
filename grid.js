@@ -47,6 +47,9 @@ class Grid {
             // Check for bottom collision
             if (xy[1] == 19) {
                 return true;
+            } else if (xy[1] + 1 > -1 && this.matrix[xy[1] + 1][xy[0]] == 1) {
+                // Check for collision with a non-active piece
+                return true;
             }
         }
         return false;
