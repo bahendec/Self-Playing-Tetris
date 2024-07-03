@@ -42,14 +42,20 @@ class Grid {
         this.size = size;
     }
     // Determine if a collision will occur if the active piece moves down one space
-    fallingCollisionCheck() {
-        let pos = this.active.getPositions();
+    fallingCollisionCheck(pos) {
         for (let xy of pos) {
+            // Check for bottom collision
             if (xy[1] == 19) {
                 return true;
             }
         }
         return false;
+    }
+
+    addToMatrix(pos) {
+        for (let xy of pos) {
+            this.matrix[xy[1]][xy[0]] = 1;
+        }
     }
 
     update() {
@@ -69,10 +75,13 @@ class Grid {
         // Move active piece down
         if (this.active.fall(FALL_SPEED)) {
             // Make sure there is no falling collision
-            if (this.fallingCollisionCheck() == false) {
+            let pos = this.active.getPositions();
+            if (this.fallingCollisionCheck(pos) == false) {
                 this.active.moveDown();
             } else {
-
+                this.shapes.push(this.active);
+                this.addToMatrix(pos);
+                this.hasActivePiece = false;
             }
         }
     }
