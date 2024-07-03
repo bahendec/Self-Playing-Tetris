@@ -19,4 +19,11 @@ class Block {
     moveDown() {
         this.y += 1;
     }
+
+    getX() {
+        return this.x;
+    }
+    getY() {
+        return this.y;
+    }
 }

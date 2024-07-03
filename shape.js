@@ -32,4 +32,15 @@ class Shape {
             block.moveDown();
         }
     }
+    // return a list of block positions in the shape
+    getPositions() {
+        let pos = [];
+        for (let block of this.blocks) {
+            let xy = [];
+            xy.push(block.getX());
+            xy.push(block.getY());
+            pos.push(xy);
+        }
+        return pos;
+    }
 }
