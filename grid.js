@@ -176,6 +176,12 @@ class Grid {
     }
 
     rotationCollisionCheck(pos) {
+        for (let xy of pos) {
+            // Check for oob collision
+            if (xy[0] < 0 || xy[0] > 9 || xy[1] > 19) {
+                return true
+            }
+        }
         return false;
     }
 
