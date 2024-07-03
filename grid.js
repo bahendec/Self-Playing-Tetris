@@ -83,6 +83,7 @@ class Grid {
                 this.active.moveDown();
             } else {
                 this.shapes.push(this.active);
+                // Check if the game has ended before adding: Do later
                 this.addToMatrix(pos);
                 this.hasActivePiece = false;
             }
@@ -96,6 +97,14 @@ class Grid {
         for (let shape of this.shapes) {
             shape.draw();
         }
+    }
+
+    moveLeft() {
+        this.active.moveLeft();
+    }
+
+    moveRight() {
+        this.active.moveRight();
     }
 
     moveDown() {

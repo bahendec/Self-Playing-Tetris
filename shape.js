@@ -32,6 +32,19 @@ class Shape {
         }
         this.oldy = this.y;
     }
+
+    moveLeft() {
+        for (let block of this.blocks) {
+            block.moveLeft();
+        }
+    }
+
+    moveRight() {
+        for (let block of this.blocks) {
+            block.moveRight();
+        }
+    }
+
     // return a list of block positions in the shape
     getPositions() {
         let pos = [];

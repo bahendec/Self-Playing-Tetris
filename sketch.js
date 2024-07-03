@@ -40,7 +40,9 @@ function windowResized() {
 
 // Change Later
 function keyPressed() {
-  if (keyCode === 32) {
-    grid.moveDown();
+  if (keyCode === 37) {
+    grid.moveLeft();
+  } else if (keyCode === 39) {
+    grid.moveRight();
   }
 }

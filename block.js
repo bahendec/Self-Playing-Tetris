@@ -20,6 +20,14 @@ class Block {
         this.y += 1;
     }
 
+    moveLeft() {
+        this.x -= 1;
+    }
+
+    moveRight() {
+        this.x += 1;
+    }
+
     getX() {
         return this.x;
     }
