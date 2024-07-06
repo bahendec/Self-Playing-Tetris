@@ -30,9 +30,11 @@ class Shape {
         return this.blocks.length;
     }
 
-    moveDown(above) {
+    moveDown(below) {
         for (let block of this.blocks) {
-            block.moveDown();
+            if (block.getY() < below) {
+                block.moveDown();
+            }
         }
         this.oldy += 1;
     }
@@ -66,7 +68,7 @@ class Shape {
     // Delete blocks in given spots in blocks array
     deleteBlocks(spots) {
         let count = 0;
-        for (let loc in spots) {
+        for (let loc of spots) {
             this.blocks.splice(loc - count, 1);
             count += 1;
         }

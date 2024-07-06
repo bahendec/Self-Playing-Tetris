@@ -92,6 +92,8 @@ class Grid {
                 this.shapes.splice(shape - count, 1);
                 count += 1;
             }
+            // Move blocks below (visually above) row down
+            this.moveDown(row);
         }
     }
 
@@ -140,7 +142,7 @@ class Grid {
             // Make sure there is no falling collision
             let pos = this.active.getPositions();
             if (this.fallingCollisionCheck(pos) == false) {
-                this.active.moveDown();
+                this.active.moveDown(20);
             } else {
                 this.shapes.push(this.active);
                 // Check if the game has ended before adding: Do later
@@ -202,16 +204,15 @@ class Grid {
         }
     }
 
-    // Move down blocks above a certain row
-    moveDown(above) {
+    // Move down blocks below (visually above) a certain row
+    moveDown(below) {
         for (let shape of this.shapes) {
-            shape.moveDown(above);
+            shape.moveDown(below);
         }
     }
 
     getNextPiece() {
-        //let rand = floor(random()*7);
-        let rand = 2;
+        let rand = floor(random()*7);
         let shape = 0;
         switch(rand) {
             case 0:
