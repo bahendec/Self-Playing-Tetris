@@ -62,6 +62,65 @@ class Grid {
         }
     }
 
+    clearedLines() {
+        let rows = [];
+        for (let row = 0; row < 20; row += 1) {
+            let isClear = true;
+            for (let col = 0; col < 10; col += 1) {
+                if (this.matrix[row][col] == 0) {
+                    isClear = false;
+                    break;
+                }
+            }
+            if (isClear) {
+                rows.push(row);
+            }
+        }
+        return rows;
+    }
+
+    clearLines(rows) {
+        for (let row of rows) {
+            // remove line from matrix
+            this.matrix.splice(row, 1);
+            this.matrix.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            // remove blocks from shapes
+            let deleted_shapes = this.removeDeletedBlocks(row);
+            // remove deleted shapes
+            let count = 0;
+            for (let shape of deleted_shapes) {
+                this.shapes.splice(shape - count, 1);
+                count += 1;
+            }
+        }
+    }
+
+    // Remove blocks in given row from shapes. Return shapes with no more blocks.
+    removeDeletedBlocks(row) {
+        let deleted_shapes = [];
+        // check every shape
+        for (let i = 0; i < this.shapes.length; i += 1) {
+            let deleted_block_pos = [];
+            // check block positions
+            let pos = this.shapes[i].getPositions();
+            let j = 0;
+            for (let xy of pos) {
+                // if a block is on a deleted row add to array
+                if (xy[1] == row) {
+                    deleted_block_pos.push(j);
+                }
+                j += 1;
+            }
+            // give array to shape to delete blocks
+            this.shapes[i].deleteBlocks(deleted_block_pos);
+            // if shape has no more blocks then add its position into the return array
+            if (this.shapes[i].getLength() == 0) {
+                deleted_shapes.push(i);
+            }
+        }
+        return deleted_shapes;
+    }
+
     update() {
         // Create active piece if there is no active piece
         if (this.hasActivePiece == false) {
@@ -87,6 +146,9 @@ class Grid {
                 // Check if the game has ended before adding: Do later
                 this.addToMatrix(pos);
                 this.hasActivePiece = false;
+                // Get cleared lines and remove them
+                let clearedLines = this.clearedLines();
+                this.clearLines(clearedLines);
             }
         }
     }
@@ -140,14 +202,16 @@ class Grid {
         }
     }
 
-    moveDown() {
+    // Move down blocks above a certain row
+    moveDown(above) {
         for (let shape of this.shapes) {
-            shape.moveDown();
+            shape.moveDown(above);
         }
     }
 
     getNextPiece() {
-        let rand = floor(random()*7);
+        //let rand = floor(random()*7);
+        let rand = 2;
         let shape = 0;
         switch(rand) {
             case 0:

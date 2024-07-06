@@ -26,7 +26,11 @@ class Shape {
         return false;
     }
 
-    moveDown() {
+    getLength() {
+        return this.blocks.length;
+    }
+
+    moveDown(above) {
         for (let block of this.blocks) {
             block.moveDown();
         }
@@ -57,6 +61,15 @@ class Shape {
             pos.push(xy);
         }
         return pos;
+    }
+
+    // Delete blocks in given spots in blocks array
+    deleteBlocks(spots) {
+        let count = 0;
+        for (let loc in spots) {
+            this.blocks.splice(loc - count, 1);
+            count += 1;
+        }
     }
 
     setPositions(pos) {
