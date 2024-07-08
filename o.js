@@ -10,4 +10,18 @@ class O extends Shape {
 
         super(5, -1, blocks);
     }
+
+    setNext() {
+        for (let block of this.blocks) {
+            block.setX(block.getX() + 7.5);
+            block.setY(block.getY() + 3.5);
+        }
+    }
+
+    setGrid() {
+        for (let block of this.blocks) {
+            block.setX(block.getX() - 7.5);
+            block.setY(block.getY() - 3.5);
+        }
+    }
 }

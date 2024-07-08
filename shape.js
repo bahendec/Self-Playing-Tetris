@@ -210,4 +210,18 @@ class Shape {
                 return this.shift(pos, -1, -2);
         }
     }
+
+    setNext() {
+        for (let block of this.blocks) {
+            block.setX(block.getX() + 8);
+            block.setY(block.getY() + 3.5);
+        }
+    }
+
+    setGrid() {
+        for (let block of this.blocks) {
+            block.setX(block.getX() - 8);
+            block.setY(block.getY() - 3.5);
+        }
+    }
 }

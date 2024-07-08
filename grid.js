@@ -27,7 +27,7 @@ class Grid {
         this.hasActivePiece = false;
         this.active = 0;
         this.hasNext = false;
-        this.next = 0;
+        this.next;
         this.size = 0;
         this.rotationState = 0;
     }
@@ -39,6 +39,9 @@ class Grid {
     setSize(size) {
         for (let shape of this.shapes) {
             shape.setSize(size);
+        }
+        if (this.hasActivePiece) {
+            this.active.setSize(size);
         }
         this.size = size;
     }
@@ -130,11 +133,14 @@ class Grid {
                 this.active = this.getNextPiece();
                 this.hasActivePiece = true
                 this.next = this.getNextPiece();
+                this.next.setNext();
                 this.hasNext = true;
             } else {
+                this.next.setGrid();
                 this.active = this.next;
                 this.hasActivePiece = true;
                 this.next = this.getNextPiece();
+                this.next.setNext();
             }
         }
         // Move active piece down
@@ -213,7 +219,7 @@ class Grid {
 
     getNextPiece() {
         let rand = floor(random()*7);
-        let shape = 0;
+        let shape;
         switch(rand) {
             case 0:
                 shape = new O(this.size);
@@ -270,28 +276,43 @@ class Grid {
         let test1 = this.active.rotateTestOne(clockwise);
         if (this.rotationCollisionCheck(test1) == false) {
             this.active.setPositions(test1);
+            this.rotationState = temp_rotationState;
             return;
         } 
         // SRS begin
         let test2 = this.active.rotateTestTwo(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test2) == false) {
             this.active.setPositions(test2);
+            this.rotationState = temp_rotationState;
             return;
         }
         let test3 = this.active.rotateTestThree(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test3) == false) {
             this.active.setPositions(test3);
+            this.rotationState = temp_rotationState;
             return;
         }
         let test4 = this.active.rotateTestFour(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test4) == false) {
             this.active.setPositions(test4);
+            this.rotationState = temp_rotationState;
             return;
         }
         let test5 = this.active.rotateTestFive(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test5) == false) {
             this.active.setPositions(test5);
+            this.rotationState = temp_rotationState;
             return;
         }
+    }
+
+    hasNextPiece() {
+        return this.hasNext;
+    }
+    getNext() {
+        return this.next;
+    }
+    isActivePiece() {
+        return this.hasActivePiece;
     }
 }
