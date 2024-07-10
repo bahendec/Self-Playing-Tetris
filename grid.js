@@ -36,12 +36,12 @@ class Grid {
         this.shapes = shapes;
     }
 
-    setSize(size) {
+    setSize(size, offset) {
         for (let shape of this.shapes) {
-            shape.setSize(size);
+            shape.setSize(size, offset);
         }
         if (this.hasActivePiece) {
-            this.active.setSize(size);
+            this.active.setSize(size, offset);
         }
         this.size = size;
     }

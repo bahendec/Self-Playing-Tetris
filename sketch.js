@@ -11,7 +11,7 @@ function setup() {
   window.canvas = createCanvas(windowHeight*WINDOW_WIDTH_MODIFIER + (windowHeight * windowExtra), windowHeight*WINDOW_HEIGHT_MODIFIER);
   extraWidth = windowHeight * windowExtra;
   frameRate(60);
-  grid.setSize((width-extraWidth)/10);
+  grid.setSize((width-extraWidth)/10, 0);
 }
 
 function draw() {

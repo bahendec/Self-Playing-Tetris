@@ -4,6 +4,7 @@ class Block {
         this.y = y;
         this.size = size;
         this.color = color;
+        this.offset;
     }
 
     draw() {
@@ -12,8 +13,9 @@ class Block {
         rect((this.x * this.size) + 1, (this.y * this.size) + 1, this.size - 2, this.size - 2);
     }
 
-    setSize(size) {
+    setSize(size, offset) {
         this.size = size;
+        this.offset = this.size;
     }
 
     moveDown() {

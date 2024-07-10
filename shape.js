@@ -12,9 +12,9 @@ class Shape {
         }
     }
 
-    setSize(size) {
+    setSize(size, offset) {
         for (let block of this.blocks) {
-            block.setSize(size);
+            block.setSize(size, offset);
         }
     }
     // Check if it's time for a fall
