@@ -17,4 +17,11 @@ class O extends Shape {
             block.setY(block.getY() + 3.5);
         }
     }
+
+    setHold() {
+        for (let block of this.blocks) {
+            block.setX(block.getX() - 7.5);
+            block.setY(block.getY() + 3.5);
+        }
+    }
 }

@@ -27,6 +27,16 @@ function draw() {
   textAlign(CENTER, CENTER);
   text('Next', (width - (0.5 * extraWidth/2)), height * 0.3);
 
+  // rect for held piece
+  fill([255, 255, 255]);
+  noStroke();
+  rect(0, height * 0.25, extraWidth/2, height * 0.75);
+
+  // text for held piece
+  fill([90, 158, 240]);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  text('Hold', ((0.5 * extraWidth/2)), height * 0.3);
 
   drawVertGrid();
   drawHorzGrid();
