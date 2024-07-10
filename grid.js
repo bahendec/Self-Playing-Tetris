@@ -43,6 +43,9 @@ class Grid {
         if (this.hasActivePiece) {
             this.active.setSize(size, offset);
         }
+        if (this.hasNext) {
+            this.next.setSize(size, offset);
+        }
         this.size = size;
     }
     // Determine if a collision will occur if the active piece moves down one space

@@ -4,18 +4,18 @@ class Block {
         this.y = y;
         this.size = size;
         this.color = color;
-        this.offset;
+        this.offset = 0;
     }
 
     draw() {
         fill(this.color);
         noStroke();
-        rect((this.x * this.size) + 1, (this.y * this.size) + 1, this.size - 2, this.size - 2);
+        rect((this.x * this.size) + this.offset + 1, (this.y * this.size) + 1, this.size - 2, this.size - 2);
     }
 
     setSize(size, offset) {
         this.size = size;
-        this.offset = this.size;
+        this.offset = offset;
     }
 
     moveDown() {
