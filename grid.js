@@ -142,7 +142,7 @@ class Grid {
                 this.next.setNext();
                 this.hasNext = true;
             } else {
-                this.next.setGrid();
+                this.next.reset();
                 this.active = this.next;
                 this.hasActivePiece = true;
                 this.next = this.getNextPiece();
@@ -332,12 +332,18 @@ class Grid {
         }
 
         if (this.hasHold) {
-
+            this.hold.reset();
+            this.active.reset();
+            this.active.setHold();
+            let temp = this.active;
+            this.active = this.hold;
+            this.hold = temp;
+            this.rotationState = 0;
         } else {
             this.hold = this.active;
             this.hold.reset();
             this.hold.setHold();
-            this.next.setGrid();
+            this.next.reset();
             this.active = this.next;
             this.next = this.getNextPiece();
             this.next.setNext();

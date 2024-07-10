@@ -220,13 +220,6 @@ class Shape {
         }
     }
 
-    setGrid() {
-        for (let block of this.blocks) {
-            block.setX(block.getX() - 8);
-            block.setY(block.getY() - 3.5);
-        }
-    }
-
     setHold() {
         for (let block of this.blocks) {
             block.setX(block.getX() - 7);
@@ -237,6 +230,7 @@ class Shape {
     reset() {
         this.x = this.defaultX;
         this.y = this.defaultY;
+        this.oldy = this.y;
         for (let block of this.blocks) {
             block.reset();
         }
