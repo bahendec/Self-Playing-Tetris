@@ -6,6 +6,7 @@ const windowExtra = 0.475;
 let grid = new Grid();
 let extraWidth;
 let nextPiece = new NextPiece();
+let holdPiece = new HoldPiece();
 
 function setup() {
   window.canvas = createCanvas(windowHeight*WINDOW_WIDTH_MODIFIER + (windowHeight * windowExtra), windowHeight*WINDOW_HEIGHT_MODIFIER);
@@ -16,11 +17,11 @@ function setup() {
 
 function draw() {
   background(0);
-  // rectangle
+  // rectangle for next piece
   fill([255, 255, 255]);
   noStroke();
   rect((width - extraWidth/2), height * 0.25, extraWidth/2, height * 0.75);
-  // text
+  // text for next piece
   fill([90, 158, 240]);
   textSize(32);
   textAlign(CENTER, CENTER);
@@ -30,15 +31,21 @@ function draw() {
   drawVertGrid();
   drawHorzGrid();
 
-  // draw next piece
+  // set next piece
   if (grid.hasNextPiece() && grid.isActivePiece()) {
     nextPiece.setShape(grid.getNext());
   }
-  
+
+  // draw held piece
+  if (grid.hasHeld()) {
+    holdPiece.setShape(grid.getHold());
+  }
+
   grid.update();
   grid.setSize((width-extraWidth)/10, extraWidth/2);
   grid.draw();
   nextPiece.draw();
+  holdPiece.draw();
 }
 
 function drawVertGrid() {
@@ -71,5 +78,7 @@ function keyPressed() {
     grid.rotate(true);
   } else if (keyCode === 90) {
     grid.rotate(false);
+  } else if (keyCode === 67) {
+    grid.doHold();
   }
 }

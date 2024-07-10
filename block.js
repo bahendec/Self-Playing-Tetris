@@ -2,6 +2,8 @@ class Block {
     constructor(x, y, size, color) {
         this.x = x;
         this.y = y;
+        this.defaultX = x;
+        this.defaultY = y;
         this.size = size;
         this.color = color;
         this.offset = 0;
@@ -41,5 +43,9 @@ class Block {
     }
     setY(y) {
         this.y = y;
+    }
+    reset() {
+        this.x = this.defaultX;
+        this.y = this.defaultY;
     }
 }

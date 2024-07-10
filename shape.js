@@ -2,6 +2,8 @@ class Shape {
     constructor(x, y, blocks) {
         this.x = x;
         this.y = y;
+        this.defaultX = x;
+        this.defaultY = y;
         this.oldy = y;
         this.blocks = blocks;
     }
@@ -222,6 +224,21 @@ class Shape {
         for (let block of this.blocks) {
             block.setX(block.getX() - 8);
             block.setY(block.getY() - 3.5);
+        }
+    }
+
+    setHold() {
+        for (let block of this.blocks) {
+            block.setX(block.getX() - 7);
+            block.setY(block.getY() + 3.5);
+        }
+    }
+
+    reset() {
+        this.x = this.defaultX;
+        this.y = this.defaultY;
+        for (let block of this.blocks) {
+            block.reset();
         }
     }
 }

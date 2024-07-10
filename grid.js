@@ -30,6 +30,9 @@ class Grid {
         this.next;
         this.size = 0;
         this.rotationState = 0;
+        this.hold;
+        this.hasHold = false;
+        this.canHold = true;
     }
 
     setShapes(shapes) {
@@ -157,6 +160,7 @@ class Grid {
                 // Check if the game has ended before adding: Do later
                 this.addToMatrix(pos);
                 this.hasActivePiece = false;
+                this.canHold = true;
                 // Get cleared lines and remove them
                 let clearedLines = this.clearedLines();
                 this.clearLines(clearedLines);
@@ -317,5 +321,36 @@ class Grid {
     }
     isActivePiece() {
         return this.hasActivePiece;
+    }
+
+    doHold() {
+        if (this.hasActivePiece == false) {
+            return;
+        }
+        if (this.canHold == false) {
+            return;
+        }
+
+        if (this.hasHold) {
+
+        } else {
+            this.hold = this.active;
+            this.hold.reset();
+            this.hold.setHold();
+            this.next.setGrid();
+            this.active = this.next;
+            this.next = this.getNextPiece();
+            this.next.setNext();
+        }
+        this.hasHold = true;
+        // cant hold again until piece set down
+        this.canHold = false;
+    }
+
+    getHold() {
+        return this.hold;
+    }
+    hasHeld() {
+        return this.hasHold;
     }
 }
