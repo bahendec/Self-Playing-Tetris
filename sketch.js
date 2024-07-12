@@ -56,6 +56,14 @@ function draw() {
   grid.draw();
   nextPiece.draw();
   holdPiece.draw();
+  // text for score
+  let score = grid.getScore();
+  fill([90, 158, 240]);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  text('Score:', (width - (0.5 * extraWidth/2)), height * 0.5);
+  text(score.toString(), (width - (0.5 * extraWidth/2)), height * 0.6);
+
 }
 
 function drawVertGrid() {

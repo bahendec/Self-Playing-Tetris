@@ -34,6 +34,7 @@ class Grid {
         this.hasHold = false;
         this.canHold = true;
         this.gameOver = false;
+        this.score = 0;
     }
 
     setShapes(shapes) {
@@ -55,6 +56,10 @@ class Grid {
 
     getGameOver() {
         return this.gameOver;
+    }
+
+    getScore() {
+        return this.score;
     }
 
     // Determine if a collision will occur if the active piece moves down one space
@@ -88,6 +93,7 @@ class Grid {
                 }
             }
             if (isClear) {
+                this.score += 1;
                 rows.push(row);
             }
         }
