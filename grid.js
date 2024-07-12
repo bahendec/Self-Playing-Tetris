@@ -33,6 +33,7 @@ class Grid {
         this.hold;
         this.hasHold = false;
         this.canHold = true;
+        this.gameOver = false;
     }
 
     setShapes(shapes) {
@@ -51,6 +52,11 @@ class Grid {
         }
         this.size = size;
     }
+
+    getGameOver() {
+        return this.gameOver;
+    }
+
     // Determine if a collision will occur if the active piece moves down one space
     fallingCollisionCheck(pos) {
         for (let xy of pos) {
@@ -157,13 +163,21 @@ class Grid {
                 this.active.moveDown(20);
             } else {
                 this.shapes.push(this.active);
-                // Check if the game has ended before adding: Do later
-                this.addToMatrix(pos);
-                this.hasActivePiece = false;
-                this.canHold = true;
-                // Get cleared lines and remove them
-                let clearedLines = this.clearedLines();
-                this.clearLines(clearedLines);
+                // Check if the game has ended before adding
+                for (let xy of pos) {
+                    if (xy[1] < 0) {
+                        this.gameOver = true;
+                        break;
+                    }
+                }
+                if (this.gameOver == false) {
+                    this.addToMatrix(pos);
+                    this.hasActivePiece = false;
+                    this.canHold = true;
+                    // Get cleared lines and remove them
+                    let clearedLines = this.clearedLines();
+                    this.clearLines(clearedLines);
+                }
             }
         }
     }
