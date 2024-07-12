@@ -63,7 +63,13 @@ function draw() {
   textAlign(CENTER, CENTER);
   text('Score:', (width - (0.5 * extraWidth/2)), height * 0.5);
   text(score.toString(), (width - (0.5 * extraWidth/2)), height * 0.6);
-
+  // check for game over
+  if (grid.getGameOver()) {
+    grid = new Grid();
+    grid.setSize((width-extraWidth)/10, extraWidth/2);
+    nextPiece.reset();
+    holdPiece.reset();
+  }
 }
 
 function drawVertGrid() {

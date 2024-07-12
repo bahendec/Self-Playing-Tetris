@@ -4,6 +4,10 @@ class NextPiece {
         this.shape;
     }
 
+    reset() {
+        this.hasShape = false;
+    }
+
     setShape(shape) {
         this.shape = shape;
         this.hasShape = true;
