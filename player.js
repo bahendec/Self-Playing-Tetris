@@ -14,4 +14,8 @@ class Player {
         this.hold = hold;
         this.next = next;
     }
+
+    generateInstructions() {
+        return ['l', 'l', 'l','l','l',];
+    }
 }

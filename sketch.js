@@ -71,7 +71,21 @@ function draw() {
     nextPiece.reset();
     holdPiece.reset();
   } else {
-    player.setGameState(grid.getMatrix(), grid.getActive(), grid.getActiveType(), grid.getHold(), grid.getNext());
+    if (grid.isNewActive()) {
+      player.setGameState(grid.getMatrix(), grid.getActive(), grid.getActiveType(), grid.getHold(), grid.getNext());
+      instructions = player.generateInstructions();
+      executeInstructions(instructions);
+    }
+  }
+}
+
+function executeInstructions(instructions) {
+  for (let i of instructions) {
+    switch(i) {
+      case 'l':
+        grid.moveLeft();
+        break;
+    }
   }
 }
 

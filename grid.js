@@ -35,6 +35,11 @@ class Grid {
         this.canHold = true;
         this.gameOver = false;
         this.score = 0;
+        this.new_active = false;
+    }
+
+    isNewActive() {
+        return this.new_active;
     }
 
     setShapes(shapes) {
@@ -172,6 +177,9 @@ class Grid {
                 this.next = this.getNextPiece();
                 this.next.setNext();
             }
+            this.new_active = true;
+        } else {
+            this.new_active = false;
         }
         // Move active piece down
         if (this.active.fall(FALL_SPEED)) {
@@ -215,7 +223,7 @@ class Grid {
             // Check for wall collision
             if (xy[0] == 0) {
                 return true;
-            } else if (this.matrix[xy[1]][xy[0] - 1] == 1) {
+            } else if (xy[1] >= 0 && this.matrix[xy[1]][xy[0] - 1] == 1) {
                 // Check block collsions
                 return true;
             }
