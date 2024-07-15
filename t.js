@@ -8,5 +8,6 @@ class T extends Shape {
         blocks.push(new Block(4, -1, size, T_COLOR));
         blocks.push(new Block(5, -1, size, T_COLOR));
         super(4.5, -0.5, blocks);
+        this.type = 't';
     }
 }

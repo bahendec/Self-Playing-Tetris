@@ -9,6 +9,7 @@ class O extends Shape {
         blocks.push(new Block(5, -1, size, O_COLOR));
 
         super(5, -1, blocks);
+        this.type = 'o';
     }
 
     setNext() {

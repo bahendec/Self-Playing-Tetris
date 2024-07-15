@@ -6,6 +6,11 @@ class Shape {
         this.defaultY = y;
         this.oldy = y;
         this.blocks = blocks;
+        this.type;
+    }
+
+    getType() {
+        return this.type;
     }
 
     draw() {

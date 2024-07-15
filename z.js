@@ -8,5 +8,6 @@ class Z extends Shape {
         blocks.push(new Block(4, -1, size, Z_COLOR));
         blocks.push(new Block(5, -1, size, Z_COLOR));
         super(4.5, -0.5, blocks);
+        this.type = 'z';
     }
 }

@@ -8,6 +8,7 @@ class Line extends Shape {
         blocks.push(new Block(5, -1, size, LINE_COLOR));
         blocks.push(new Block(6, -1, size, LINE_COLOR));
         super(5, 0, blocks);
+        this.type = 'i';
     }
 
     rotateTestTwo(state, clockwise, pos) {

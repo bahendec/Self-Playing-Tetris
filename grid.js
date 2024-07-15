@@ -62,6 +62,18 @@ class Grid {
         return this.score;
     }
 
+    getMatrix() {
+        return this.matrix;
+    }
+
+    getActiveType() {
+        return this.active.getType();
+    }
+
+    getActive() {
+        return this.active;
+    }
+
     // Determine if a collision will occur if the active piece moves down one space
     fallingCollisionCheck(pos) {
         for (let xy of pos) {

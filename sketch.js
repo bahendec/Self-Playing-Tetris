@@ -7,6 +7,7 @@ let grid = new Grid();
 let extraWidth;
 let nextPiece = new NextPiece();
 let holdPiece = new HoldPiece();
+let player = new Player();
 
 function setup() {
   window.canvas = createCanvas(windowHeight*WINDOW_WIDTH_MODIFIER + (windowHeight * windowExtra), windowHeight*WINDOW_HEIGHT_MODIFIER);
@@ -69,6 +70,8 @@ function draw() {
     grid.setSize((width-extraWidth)/10, extraWidth/2);
     nextPiece.reset();
     holdPiece.reset();
+  } else {
+    player.setGameState(grid.getMatrix(), grid.getActive(), grid.getActiveType(), grid.getHold(), grid.getNext());
   }
 }
 
@@ -92,7 +95,6 @@ function windowResized() {
   grid.setSize((width - extraWidth)/10, extraWidth/2);
 }
 
-// Change Later
 function keyPressed() {
   if (keyCode === 37) {
     grid.moveLeft();
