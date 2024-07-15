@@ -237,7 +237,7 @@ class Grid {
             // Check for wall collision
             if (xy[0] == 9) {
                 return true;
-            } else if (this.matrix[xy[1]][xy[0] + 1] == 1) {
+            } else if (xy[1] >= 0 && this.matrix[xy[1]][xy[0] + 1] == 1) {
                 // Check block collisions
                 return true;
             }
@@ -297,11 +297,11 @@ class Grid {
     rotationCollisionCheck(pos) {
         for (let xy of pos) {
             // Check for oob collision
-            if (xy[0] < 0 || xy[0] > 9 || xy[1] > 19) {
+            if (xy[0] < 0 || xy[0] > 9 || xy[1] > 19 || xy[1] < -2) {
                 return true
             }
             // Check block collisions
-            if (this.matrix[xy[1]][xy[0]] == 1) {
+            if (xy[1] >= 0 && this.matrix[xy[1]][xy[0]] == 1) {
                 return true;
             }
         }
