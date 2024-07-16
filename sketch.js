@@ -85,6 +85,17 @@ function executeInstructions(instructions) {
       case 'l':
         grid.moveLeft();
         break;
+      case 'r':
+        grid.moveRight();
+        break;
+      case 'u':
+        grid.rotate(true);
+      case 'x':
+        grid.rotate(false);
+        break;
+      case 'c':
+        grid.doHold();
+        break;
     }
   }
 }

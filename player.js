@@ -16,6 +16,16 @@ class Player {
     }
 
     generateInstructions() {
-        return ['l', 'l', 'l','l','l',];
+        let rotations = [[], ['u'], ['u', 'u'], ['x']];
+        let pos = this.active.getPositions();
+        let minScore = [100000, []];
+        for (let rot of rotations) {
+            // make rotations
+            // neutral drop
+            // evaluate
+            // while can move left iteratively move left and drop and evaluate
+            // same with right
+            // save min evaluation and instructions 
+        }
     }
 }
