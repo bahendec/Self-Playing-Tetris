@@ -15,6 +15,10 @@ class Player {
         this.next = next;
     }
 
+    evaluate(matrix) {
+        return 100000;
+    }
+
     generateInstructions() {
         let rotations = [[], ['u'], ['u', 'u'], ['x']];
         let pos = this.active.getPositions();
@@ -32,13 +36,29 @@ class Player {
                 }
             }
             // neutral drop
+            // save pos before drop
+            let before_pos = this.active.getPositions();
+            // drop
+            let matrix = this.drop();
             // evaluate
+            let score = this.evaluate(matrix);
+            if (score < minScore[0]) {
+                minScore = [score, rot];
+            }
             // while can move left iteratively move left and drop and evaluate
             // same with right
             // save min evaluation and instructions 
 
             this.active.setPositions(pos);
         }
+    }
+
+    drop() {
+        // drop active and return matrix
+    }
+
+    dropCollisionCheck() {
+
     }
 
     rotationCollisionCheck(pos) {
