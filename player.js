@@ -21,27 +21,21 @@ class Player {
 
     generateInstructions() {
         let rotations = [[], ['u'], ['u', 'u'], ['x']];
-        let pos = this.active.getPositions();
         let minScore = [100000, []];
         for (let rot of rotations) {
+            let score;
             // make rotations
-            for (let turn of rot) {
-                switch (turn) {
-                    case 'u':
-                        this.rotate(true);
-                        break;
-                    case 'x':
-                        this.rotate(false);
-                        break;
-                }
-            }
+            this.makeRotations(rot);
             // neutral drop
-            // save pos before drop
-            let before_pos = this.active.getPositions();
             // drop
-            let matrix = this.drop();
+            let matrix_gameOver = this.drop();
             // evaluate
-            let score = this.evaluate(matrix);
+            // if the game is over give bad score, otherwise evaluate
+            if (matrix_gameOver[1]) {
+                score = [99999, rot]
+            } else {
+                score = this.evaluate(matrix_gameOver[0]);
+            }
             if (score < minScore[0]) {
                 minScore = [score, rot];
             }
@@ -53,12 +47,56 @@ class Player {
         }
     }
 
+    makeRotations(rot) {
+        // make rotations
+        for (let turn of rot) {
+            switch (turn) {
+                case 'u':
+                    this.rotate(true);
+                    break;
+                case 'x':
+                    this.rotate(false);
+                    break;
+            }
+        }
+    }
+
     drop() {
         // drop active and return matrix
+        let matrix = this.matrix;
+        let isGameOver = false;
+        // keep moving down until collision
+        while (true) {
+            if (this.dropCollisionCheck() == false) {
+                this.active.moveDown(20);
+            } else {
+                break;
+            }
+        }
+        // add active new position to matrix and return
+        let pos = this.active.getPositions();
+        for (let xy of pos) {
+            if (xy[1] >= 0) {
+                matrix[xy[1]][xy[0]] = 1;
+            } else {
+                isGameOver = true
+            }
+        }
+        return [matrix, isGameOver];
     }
 
     dropCollisionCheck() {
-
+        let pos = this.active.getPositions();
+        for (let xy of pos) {
+            if (xy[1] >= 19) {
+                // collision with bottom of grid
+                return true;
+            } else if (xy[1] >= -1 && this.matrix[xy[1] + 1][xy[0]] == 1) {
+                // collision with inactive piece
+                return true;
+            }
+        }
+        return false;
     }
 
     rotationCollisionCheck(pos) {
