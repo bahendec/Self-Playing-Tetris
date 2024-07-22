@@ -73,7 +73,7 @@ function draw() {
   } else {
     if (grid.isNewActive()) {
       player.setGameState(grid.getMatrix(), grid.getActive(), grid.getActiveType(), grid.getHold(), grid.getNext());
-      instructions = player.generateInstructions();
+      let instructions = player.generateInstructions();
       executeInstructions(instructions);
     }
   }
@@ -90,6 +90,7 @@ function executeInstructions(instructions) {
         break;
       case 'u':
         grid.rotate(true);
+        break;
       case 'x':
         grid.rotate(false);
         break;

@@ -5,6 +5,7 @@ class Player {
         this.hold;
         this.next;
         this.active_type;
+        this.rotationState;
     }
 
     setGameState(matrix, active, active_type, hold, next) {
@@ -13,13 +14,15 @@ class Player {
         this.active_type = active_type;
         this.hold = hold;
         this.next = next;
+        this.rotationState = 0;
     }
 
     evaluate(matrix) {
         let score = 0;
         // get height of matrix
-        let height;
+        let height = 0;
         let done = false;
+        // currently doesnt check cleared lines redo later
         for (let i = 0; i < 20; i+=1) {
             for (let square of matrix[i]) {
                 if (square == 1) {
@@ -43,12 +46,12 @@ class Player {
             // neutral drop
             // make rotations
             this.makeRotations(rot);
-            minScore = this.dropEval(rot, minScore, rot);
+            minScore = this.dropEval(minScore, rot);
             // while can move left iteratively move left and drop and evaluate
             let count = 1;
             let condition = true;
-            let instructs = rot;
             while (condition) {
+                let instructs = [...rot];
                 if (this.canMove(true)) {
                     // make rotations
                     this.makeRotations(rot);
@@ -62,15 +65,16 @@ class Player {
                     }
                 }
                 if (condition) {
-                    minScore = this.dropEval(rot, minScore, instructs);
+                    minScore = this.dropEval(minScore, instructs);
                     count += 1;
                 }
             }
+            this.active.reset();
             // same with right
             count = 1;
             condition = true;
-            instructs = rot;
             while (condition) {
+                let instructs = [...rot];
                 if (this.canMove(false)) {
                     // make rotations
                     this.makeRotations(rot);
@@ -84,16 +88,18 @@ class Player {
                     }
                 }
                 if (condition) {
-                    minScore = this.dropEval(rot, minScore, instructs);
+                    minScore = this.dropEval(minScore, instructs);
                     count += 1;
                 }
             }
+            this.active.reset();
         }
         return minScore[1];
     }
 
     makeRotations(rot) {
         // make rotations
+        this.rotationState = 0;
         for (let turn of rot) {
             switch (turn) {
                 case 'u':
@@ -106,7 +112,7 @@ class Player {
         }
     }
 
-    dropEval(rot, minScore, instructs) {
+    dropEval(minScore, instructs) {
         let score;
         // drop
         let matrix_gameOver = this.drop();
@@ -126,7 +132,7 @@ class Player {
 
     drop() {
         // drop active and return matrix
-        let matrix = this.matrix;
+        let matrix = this.matrix.map(innerArray => [...innerArray]);
         let isGameOver = false;
         // keep moving down until collision
         while (true) {
@@ -178,7 +184,7 @@ class Player {
 
     rotate(clockwise) {
         // Get new rotation state
-        let temp_rotationState = 0;
+        let temp_rotationState = this.rotationState;
         if (clockwise) {
             temp_rotationState += 1;
         } else {
@@ -191,27 +197,32 @@ class Player {
         let test1 = this.active.rotateTestOne(clockwise);
         if (this.rotationCollisionCheck(test1) == false) {
             this.active.setPositions(test1);
+            this.rotationState = temp_rotationState;
             return;
         } 
         // SRS begin
         let test2 = this.active.rotateTestTwo(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test2) == false) {
             this.active.setPositions(test2);
+            this.rotationState = temp_rotationState;
             return;
         }
         let test3 = this.active.rotateTestThree(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test3) == false) {
             this.active.setPositions(test3);
+            this.rotationState = temp_rotationState;
             return;
         }
         let test4 = this.active.rotateTestFour(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test4) == false) {
             this.active.setPositions(test4);
+            this.rotationState = temp_rotationState;
             return;
         }
         let test5 = this.active.rotateTestFive(this.rotationState, clockwise, test1);
         if (this.rotationCollisionCheck(test5) == false) {
             this.active.setPositions(test5);
+            this.rotationState = temp_rotationState;
             return;
         }
     }
@@ -226,7 +237,7 @@ class Player {
                     return false;
                 }
             } else {
-                if (xy[0] == 19) {
+                if (xy[0] == 9) {
                     return false;
                 } else if (xy[1] >= 0 && this.matrix[xy[1]][xy[0] + 1] == 1) {
                     return false;
