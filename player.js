@@ -16,35 +16,80 @@ class Player {
     }
 
     evaluate(matrix) {
-        return 100000;
+        let score = 0;
+        // get height of matrix
+        let height;
+        let done = false;
+        for (let i = 0; i < 20; i+=1) {
+            for (let square of matrix[i]) {
+                if (square == 1) {
+                    done = true;
+                    height = 20 - i;
+                    break;
+                }
+            }
+            if (done) {
+                break;
+            }
+        }
+        // get number of holes
+        return height;
     }
 
     generateInstructions() {
         let rotations = [[], ['u'], ['u', 'u'], ['x']];
         let minScore = [100000, []];
         for (let rot of rotations) {
-            let score;
+            // neutral drop
             // make rotations
             this.makeRotations(rot);
-            // neutral drop
-            // drop
-            let matrix_gameOver = this.drop();
-            // evaluate
-            // if the game is over give bad score, otherwise evaluate
-            if (matrix_gameOver[1]) {
-                score = [99999, rot]
-            } else {
-                score = this.evaluate(matrix_gameOver[0]);
-            }
-            if (score < minScore[0]) {
-                minScore = [score, rot];
-            }
+            minScore = this.dropEval(rot, minScore, rot);
             // while can move left iteratively move left and drop and evaluate
+            let count = 1;
+            let condition = true;
+            let instructs = rot;
+            while (condition) {
+                if (this.canMove(true)) {
+                    // make rotations
+                    this.makeRotations(rot);
+                }
+                for (let i = 0; i < count; i+=1) {
+                    if (this.canMove(true)) {
+                        instructs.push('l');
+                        this.active.moveLeft();
+                    } else {
+                        condition = false;
+                    }
+                }
+                if (condition) {
+                    minScore = this.dropEval(rot, minScore, instructs);
+                    count += 1;
+                }
+            }
             // same with right
-            // save min evaluation and instructions 
-
-            this.active.setPositions(pos);
+            count = 1;
+            condition = true;
+            instructs = rot;
+            while (condition) {
+                if (this.canMove(false)) {
+                    // make rotations
+                    this.makeRotations(rot);
+                }
+                for (let i = 0; i < count; i+=1) {
+                    if (this.canMove(false)) {
+                        instructs.push('r');
+                        this.active.moveRight();
+                    } else {
+                        condition = false;
+                    }
+                }
+                if (condition) {
+                    minScore = this.dropEval(rot, minScore, instructs);
+                    count += 1;
+                }
+            }
         }
+        return minScore[1];
     }
 
     makeRotations(rot) {
@@ -59,6 +104,24 @@ class Player {
                     break;
             }
         }
+    }
+
+    dropEval(rot, minScore, instructs) {
+        let score;
+        // drop
+        let matrix_gameOver = this.drop();
+        // evaluate
+        // if the game is over give bad score, otherwise evaluate
+        if (matrix_gameOver[1]) {
+            score = [99999, instructs]
+        } else {
+            score = this.evaluate(matrix_gameOver[0]);
+        }
+        if (score < minScore[0]) {
+            minScore = [score, instructs];
+        }
+        this.active.reset();
+        return minScore;
     }
 
     drop() {
@@ -151,5 +214,25 @@ class Player {
             this.active.setPositions(test5);
             return;
         }
+    }
+
+    canMove(left) {
+        let pos = this.active.getPositions();
+        for (let xy of pos) {
+            if (left) {
+                if (xy[0] == 0) {
+                    return false;
+                } else if (xy[1] >= 0 && this.matrix[xy[1]][xy[0] - 1] == 1) {
+                    return false;
+                }
+            } else {
+                if (xy[0] == 19) {
+                    return false;
+                } else if (xy[1] >= 0 && this.matrix[xy[1]][xy[0] + 1] == 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
