@@ -49,6 +49,8 @@ class Player {
         }
         // get number of holes
         let holeScore = 0;
+        // number of empty pillars
+        let pillarCount = 1;
         for (let i = 0; i < 10; i+=1) {
             let degree = 0;
             let onEmpty = false;
@@ -59,9 +61,10 @@ class Player {
                 } else if (matrix[j][i] == 0) {
                     if (degree > 0) {
                         // if empty on top of closed hole reset degree
-                        holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT;
+                        holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT + (pillarCount - 1);
                         degree = 0;
                         pillarSize = 1;
+                        pillarCount += 1;
                     } else if (onEmpty) {
                         // if forming a pillar of empties 
                         pillarSize += 1;
@@ -75,7 +78,7 @@ class Player {
                     }
                 }
             }
-            holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT;
+            holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT + (pillarCount - 1);
         }
         // average height
         let pos = this.active.getPositions();
