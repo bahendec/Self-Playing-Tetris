@@ -1,5 +1,7 @@
 const HEIGHT_WEIGHT = 1;
 const HOLE_WEIGHT = 1.25;
+const HEIGHT_BASE = 1.3;
+const EMPTY_STACK_WEIGHT = 0.5;
 
 class Player {
     constructor () {
@@ -21,6 +23,8 @@ class Player {
     }
 
     evaluate(matrix) {
+        // cleared lines
+        let clearedLines = [];
         // get height of matrix
         let height = 0;
         // true when height (without clears) is calculated
@@ -40,6 +44,7 @@ class Player {
             // if line is clear subtract from height
             if (canBeClear) {
                 height -= 1;
+                clearedLines.push(i);
             }
         }
         // get number of holes
@@ -49,10 +54,12 @@ class Player {
             let onEmpty = false;
             let pillarSize = 1;
             for (let j = 19; j >= 0; j-=1) {
-                if (matrix[j][i] == 0) {
+                if (clearedLines.includes(j)) {
+                    // line is cleared skip it
+                } else if (matrix[j][i] == 0) {
                     if (degree > 0) {
                         // if empty on top of closed hole reset degree
-                        holeScore += degree * pillarSize;
+                        holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT;
                         degree = 0;
                         pillarSize = 1;
                     } else if (onEmpty) {
@@ -68,9 +75,25 @@ class Player {
                     }
                 }
             }
-            holeScore += degree * pillarSize;
+            holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT;
         }
-        return height * HEIGHT_WEIGHT + holeScore * HOLE_WEIGHT;
+        // average height
+        let pos = this.active.getPositions();
+        let height_sum = 0;
+        let height_count = 0;
+        for (let xy of pos) {
+            if (clearedLines.includes(19 - xy[1])) {
+                // do not count cleared blocks
+            } else {
+                height_sum += 19 - xy[1];
+                height_count += 1;
+            }
+        }
+        let avg_height = 0;
+        if (height_count != 0) {
+            avg_height = height_sum/height_count;
+        }
+        return (HEIGHT_BASE ** (height * HEIGHT_WEIGHT)) + (holeScore * HOLE_WEIGHT) + avg_height;
     }
 
     generateInstructions() {
