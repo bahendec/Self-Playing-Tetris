@@ -21,18 +21,23 @@ class Player {
         let score = 0;
         // get height of matrix
         let height = 0;
+        // true when height (without clears) is calculated
         let done = false;
-        // currently doesnt check cleared lines redo later
         for (let i = 0; i < 20; i+=1) {
+            let canBeClear = true;
             for (let square of matrix[i]) {
                 if (square == 1) {
-                    done = true;
-                    height = 20 - i;
-                    break;
+                    if (done == false) {
+                        done = true;
+                        height = 20 - i;
+                    }
+                } else if (canBeClear) {
+                    canBeClear = false;
                 }
             }
-            if (done) {
-                break;
+            // if line is clear subtract from height
+            if (canBeClear) {
+                height -= 1;
             }
         }
         // get number of holes
