@@ -11,13 +11,17 @@ class Player {
         this.next;
         this.active_type;
         this.rotationState;
+        this.canHold;
+        this.hasHeld;
     }
 
-    setGameState(matrix, active, active_type, hold, next) {
+    setGameState(matrix, active, active_type, hold, canHold, hasHeld, next) {
         this.matrix = matrix;
         this.active = active;
         this.active_type = active_type;
         this.hold = hold;
+        this.canHold = canHold;
+        this.hasHeld = hasHeld;
         this.next = next;
         this.rotationState = 0;
     }
@@ -99,7 +103,7 @@ class Player {
         return (HEIGHT_BASE ** (height * HEIGHT_WEIGHT)) + (holeScore * HOLE_WEIGHT) + avg_height;
     }
 
-    generateInstructions() {
+    generateInstructions(forHold) {
         let rotations = [[], ['u'], ['u', 'u'], ['x']];
         let minScore = [100000, []];
         for (let rot of rotations) {
@@ -154,7 +158,41 @@ class Player {
             }
             this.active.reset();
         }
+        if (forHold) {
+            return minScore;
+        }
+        return this.generateHoldInstructions(minScore);
+    }
+
+    generateHoldInstructions(minScore) {
+        if (this.canHold) {
+            this.doHold();
+
+            let score = this.generateInstructions(true);
+            if (score[0] < minScore[0]) {
+                score[1].unshift('c');
+                minScore = [score[0], score[1]];
+            }
+
+            // set shapes back to positions
+            if (this.hasHeld) {
+                this.active.setHold();
+            } else {
+                this.active.setNext();
+            }
+        }
         return minScore[1];
+    }
+
+    doHold() {
+        if (this.hasHeld) {
+            this.hold.reset();
+            this.active = this.hold;
+            this.rotationState = 0;
+        } else {
+            this.next.reset();
+            this.active = this.next;
+        }
     }
 
     makeRotations(rot) {

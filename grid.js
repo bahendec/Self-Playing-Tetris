@@ -363,6 +363,10 @@ class Grid {
         return this.hasActivePiece;
     }
 
+    getCanHold() {
+        return this.canHold;
+    }
+
     doHold() {
         if (this.hasActivePiece == false) {
             return;
