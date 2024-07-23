@@ -1,3 +1,6 @@
+const HEIGHT_WEIGHT = 1;
+const HOLE_WEIGHT = 1.25;
+
 class Player {
     constructor () {
         this.matrix;
@@ -18,7 +21,6 @@ class Player {
     }
 
     evaluate(matrix) {
-        let score = 0;
         // get height of matrix
         let height = 0;
         // true when height (without clears) is calculated
@@ -41,7 +43,34 @@ class Player {
             }
         }
         // get number of holes
-        return height;
+        let holeScore = 0;
+        for (let i = 0; i < 10; i+=1) {
+            let degree = 0;
+            let onEmpty = false;
+            let pillarSize = 1;
+            for (let j = 19; j >= 0; j-=1) {
+                if (matrix[j][i] == 0) {
+                    if (degree > 0) {
+                        // if empty on top of closed hole reset degree
+                        holeScore += degree * pillarSize;
+                        degree = 0;
+                        pillarSize = 1;
+                    } else if (onEmpty) {
+                        // if forming a pillar of empties 
+                        pillarSize += 1;
+                    } else {
+                        // if empty is on top of nothing
+                        onEmpty = true;
+                    }
+                } else {
+                    if (onEmpty) {
+                        degree += 1;
+                    }
+                }
+            }
+            holeScore += degree * pillarSize;
+        }
+        return height * HEIGHT_WEIGHT + holeScore * HOLE_WEIGHT;
     }
 
     generateInstructions() {
