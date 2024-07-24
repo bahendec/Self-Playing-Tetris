@@ -2,6 +2,7 @@ const HEIGHT_WEIGHT = 1;
 const HOLE_WEIGHT = 1.25;
 const HEIGHT_BASE = 1.3;
 const EMPTY_STACK_WEIGHT = 0.5;
+const EXTRA_COL_HEIGHT_WEIGHT = 2;
 
 class Player {
     constructor () {
@@ -65,7 +66,7 @@ class Player {
                 } else if (matrix[j][i] == 0) {
                     if (degree > 0) {
                         // if empty on top of closed hole reset degree
-                        holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT + (pillarCount - 1);
+                        holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT + (19-j)/4 + (pillarCount - 1);
                         degree = 0;
                         pillarSize = 1;
                         pillarCount += 1;
@@ -82,8 +83,44 @@ class Player {
                     }
                 }
             }
-            holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT + (pillarCount - 1);
+            if (matrix[0][i] == 1) {
+                holeScore += degree * pillarSize * EMPTY_STACK_WEIGHT + 19/4 + (pillarCount - 1);
+            }
         }
+        // line columns
+        // height of other cols besides largest
+        let other_col_extra_height = 0;
+        // highest col
+        let max_col = 0;
+        for (let i = 0; i < 10; i+=1) {
+            let col_height = 0;
+            let onCol = false;
+            for (let j = 19; j >= 0; j-=1) {
+                if (clearedLines.includes(j)) {
+                    // skip cleared lines
+                } else if (matrix[j][i] == 0) {
+                    // if square is empty
+                    // must be enclosed to count in col
+                    if ((i == 0 || matrix[j][i-1] == 1) && (i == 9 || matrix[j][i+1] == 1)) {
+                        col_height += 1;
+                        onCol = true;
+                    } else {
+                        // col has ended or didnt exist
+                        if (col_height > 2) {
+                            if (col_height > max_col) {
+                                other_col_extra_height += max_col;
+                                max_col = col_height;
+                            } else {
+                                other_col_extra_height += col_height;
+                            }
+                        }
+                        col_height = 0;
+                        onCol = false;
+                    }
+                }
+            }
+        }
+        let col_score = other_col_extra_height * EXTRA_COL_HEIGHT_WEIGHT;
         // average height
         let pos = this.active.getPositions();
         let height_sum = 0;
@@ -100,7 +137,7 @@ class Player {
         if (height_count != 0) {
             avg_height = height_sum/height_count;
         }
-        return (HEIGHT_BASE ** (height * HEIGHT_WEIGHT)) + (holeScore * HOLE_WEIGHT) + avg_height;
+        return (HEIGHT_BASE ** (height * HEIGHT_WEIGHT)) + (holeScore * HOLE_WEIGHT) + col_score + avg_height;
     }
 
     generateInstructions(forHold) {
