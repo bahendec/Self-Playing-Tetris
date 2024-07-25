@@ -43,7 +43,7 @@ class Shape {
                 block.moveDown();
             }
         }
-        this.oldy = floor(this.y);
+        this.oldy += 1;
     }
 
     moveLeft() {

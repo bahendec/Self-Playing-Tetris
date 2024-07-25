@@ -1,4 +1,4 @@
-const FALL_SPEED = 1; // Grid/frame
+const FALL_SPEED = 10; // Grid/frame
 
 class Grid {
     constructor() {
@@ -181,29 +181,34 @@ class Grid {
         } else {
             this.new_active = false;
         }
-        // Move active piece down
-        if (this.active.fall(FALL_SPEED)) {
-            // Make sure there is no falling collision
-            let pos = this.active.getPositions();
-            if (this.fallingCollisionCheck(pos) == false) {
-                this.active.moveDown(20);
-            } else {
-                this.shapes.push(this.active);
-                // Check if the game has ended before adding
-                for (let xy of pos) {
-                    if (xy[1] < 0) {
-                        this.gameOver = true;
+        if (this.new_active == false) {
+            // Start moving active piece but not on the frame it is created
+            if (this.active.fall(FALL_SPEED)) {
+                do {
+                    // Make sure there is no falling collision
+                    let pos = this.active.getPositions();
+                    if (this.fallingCollisionCheck(pos) == false) {
+                        this.active.moveDown(20);
+                    } else {
+                        this.shapes.push(this.active);
+                        // Check if the game has ended before adding
+                        for (let xy of pos) {
+                            if (xy[1] < 0) {
+                                this.gameOver = true;
+                                break;
+                            }
+                        }
+                        if (this.gameOver == false) {
+                            this.addToMatrix(pos);
+                            this.hasActivePiece = false;
+                            this.canHold = true;
+                            // Get cleared lines and remove them
+                            let clearedLines = this.clearedLines();
+                            this.clearLines(clearedLines);
+                        }
                         break;
                     }
-                }
-                if (this.gameOver == false) {
-                    this.addToMatrix(pos);
-                    this.hasActivePiece = false;
-                    this.canHold = true;
-                    // Get cleared lines and remove them
-                    let clearedLines = this.clearedLines();
-                    this.clearLines(clearedLines);
-                }
+                } while (this.active.fall(0));
             }
         }
     }
