@@ -1,8 +1,8 @@
 const HEIGHT_WEIGHT = 1;
-const HOLE_WEIGHT = 1.25;
+const HOLE_WEIGHT = 1.5;
 const HEIGHT_BASE = 1.3;
 const EMPTY_STACK_WEIGHT = 0.5;
-const EXTRA_COL_HEIGHT_WEIGHT = 2;
+const EXTRA_COL_HEIGHT_WEIGHT = 2.25;
 
 class Player {
     constructor () {
@@ -25,6 +25,10 @@ class Player {
         this.hasHeld = hasHeld;
         this.next = next;
         this.rotationState = 0;
+    }
+
+    getInstructions() {
+        this.generateInstructions(false);
     }
 
     evaluate(matrix) {

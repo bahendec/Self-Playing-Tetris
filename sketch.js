@@ -73,7 +73,7 @@ function draw() {
   } else {
     if (grid.isNewActive()) {
       player.setGameState(grid.getMatrix(), grid.getActive(), grid.getActiveType(), grid.getHold(), grid.getCanHold(), grid.hasHeld(), grid.getNext());
-      let instructions = player.generateInstructions(false);
+      let instructions = player.getInstructions();
       executeInstructions(instructions);
     }
   }
